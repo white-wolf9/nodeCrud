@@ -1,24 +1,22 @@
-console.log('May the node be with me!')
+//  Declaring required packages below
 const express = require('express');
 const bodyParser= require('body-parser');
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-
+//  Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+//  Configuring the port
 app.listen(3000, function(){
     console.log('Frankinstien !! It is alive!! @ 3000')
 })
-
-const connectionString = "mongodb+srv://gladiator:gladiator@cluster0.eykzi.mongodb.net/star-wars-quotes?retryWrites=true&w=majority";
-MongoClient.connect(connectionString, { useUnifiedTopology: true })
-.then(client => {
-    console.log('Connected to Database')
-    const db = client.db('star-wars-quotes')
-    const quotesCollection = db.collection('quotes')
-  })
-  .catch(error => console.error(error))
+//  Establishing connection with the database
+const uri = "mongodb+srv://gladiator:gladiator@cluster0.eykzi.mongodb.net/star-wars-quotes?retryWrites=true&w=majority";
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000
+}).catch(err => console.log(err.reason));
 
 app.get('/', function (req,res) {
     res.send('Hello World!')
